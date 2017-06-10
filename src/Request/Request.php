@@ -7,18 +7,26 @@ class Request implements RequestInterface
     private $post;
     private $cookies;
     private $server;
+    private $session;
 
     static function createFromGlobals(): Request
     {
-        return  new static($_GET, $_POST, $_COOKIE, $_SERVER);
+        return new static($_GET, $_POST, $_COOKIE, $_SERVER, Session::start());
     }
 
-    function __construct(array $get, array $post, array $cookies, array $server)
+    function __construct(
+        array $get,
+        array $post,
+        array $cookies,
+        array $server,
+        Session $session
+    )
     {
         $this->get = $get;
         $this->post = $post;
         $this->cookies = $cookies;
         $this->server = $server;
+        $this->session = $session;
     }
 
     function get(string $key, $default = null)
@@ -41,5 +49,10 @@ class Request implements RequestInterface
     function getServer(string $key)
     {
         return $this->server[$key] ?: null;
+    }
+
+    function getSession(): Session
+    {
+        return $this->session;
     }
 }

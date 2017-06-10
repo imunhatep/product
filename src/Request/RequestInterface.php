@@ -10,4 +10,6 @@ interface RequestInterface
     function setCookie(string $key, $value): Request;
 
     function getServer(string $key);
+
+    function getSession(): Session;
 }
