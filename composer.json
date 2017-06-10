@@ -1,0 +1,10 @@
+{
+    "name": "aly/product",
+    "description": "Test web project",
+    "type": "project",
+    "license": "MITM",
+    "minimum-stability": "dev",
+    "require": {
+        "twig/twig": "^3.0@dev"
+    }
+}
