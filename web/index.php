@@ -1,7 +1,7 @@
 <?php
-require_once '../vendor/autoload.php';
-
-$loader = new Twig_Loader_Filesystem('../src/Resources/view');
-$twig = new Twig_Environment(
-    $loader, [ 'cache' => '/path/to/compilation_cache', ]
-);
+// router.php
+if (preg_match('/\.(?:css|js|png|jpg|jpeg|gif)$/', $_SERVER["REQUEST_URI"])) {
+    return false;    // serve the requested resource as-is.
+} else {
+    require('app.php');
+}
