@@ -4,6 +4,9 @@
     "type": "project",
     "license": "MITM",
     "minimum-stability": "dev",
+    "config": {
+        "secure-http": false
+    },
     "require": {
         "twig/twig": "^3.0@dev"
     },
