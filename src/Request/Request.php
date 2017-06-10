@@ -1,23 +1,45 @@
 <?php
+namespace Product\Request;
 
-class Request
+class Request implements RequestInterface
 {
     private $get;
     private $post;
     private $cookies;
+    private $server;
 
-    static function createFromGlobals()
+    static function createFromGlobals(): Request
+    {
+        return  new static($_GET, $_POST, $_COOKIE, $_SERVER);
+    }
 
-
-    function __construct(array $get, array $post, array $cookies)
+    function __construct(array $get, array $post, array $cookies, array $server)
     {
         $this->get = $get;
         $this->post = $post;
         $this->cookies = $cookies;
+        $this->server = $server;
     }
 
     function get(string $key, $default = null)
     {
         return $this->get[$key] ?? $this->post[$key] ?? $default;
+    }
+
+    function getCookie(string $key, $default = null)
+    {
+        return $this->cookies[$key] ?? $default;
+    }
+
+    function setCookie(string $key, $value): Request
+    {
+        $this->cookies[$key] = $value;
+
+        return $this;
+    }
+
+    function getServer(string $key)
+    {
+        return $this->server[$key] ?: null;
     }
 }
