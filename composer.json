@@ -5,7 +5,8 @@
     "license": "MITM",
     "minimum-stability": "dev",
     "config": {
-        "secure-http": false
+        "secure-http": false,
+        "disable-tls": true
     },
     "require": {
         "twig/twig": "^3.0@dev"
