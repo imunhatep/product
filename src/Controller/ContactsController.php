@@ -1,6 +1,7 @@
 <?php
 namespace Product\Controller;
 
+use Product\Repository\CategoryRepositoryTest;
 use Product\Request\Request;
 use Product\Response\Response;
 
@@ -11,8 +12,9 @@ class ContactsController extends BaseController
         return $this->render(
             'contacts.html.twig',
             [
-                'name'  => 'Test name',
-                'phone' => '1234345345'
+                'categories' => (new CategoryRepositoryTest)->getAll(),
+                'name'       => 'Test name',
+                'phone'      => '1234345345'
             ]
         );
     }

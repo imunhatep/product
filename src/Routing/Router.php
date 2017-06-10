@@ -25,11 +25,10 @@ class Router
 
     function dispatch()
     {
-        $scriptName = $this->request->getServer('SCRIPT_NAME');
+
+        $scriptName = $this->request->getServer('PATH_INFO');
 
         $parts = explode('/', trim($scriptName, '/'));
-        array_pop($parts);
-
         $context = '/' . (reset($parts) ?? '');
 
         if(!array_key_exists($context, $this->routes)){
