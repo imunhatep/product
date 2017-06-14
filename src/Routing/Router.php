@@ -2,16 +2,15 @@
 namespace Product\Routing;
 
 use Product\Request\Request;
+use Product\Response\Response;
 
 class Router
 {
-    private $request;
     private $routes;
     private $twig;
 
-    function __construct(Request $request, \Twig_Environment $twig, array $routes = [])
+    function __construct(\Twig_Environment $twig, array $routes = [])
     {
-        $this->request = $request;
         $this->twig = $twig;
         $this->routes = $routes;
     }
@@ -23,10 +22,10 @@ class Router
         return $this;
     }
 
-    function dispatch()
+    function dispatch(Request $request): Response
     {
 
-        $scriptName = $this->request->getServer('PATH_INFO');
+        $scriptName = $request->getServer('PATH_INFO');
 
         $parts = explode('/', trim($scriptName, '/'));
         $context = '/' . (reset($parts) ?? '');
@@ -37,6 +36,6 @@ class Router
 
         $controller = new $this->routes[$context]($this->twig);
 
-        return call_user_func_array([$controller, 'indexAction'], [$this->request]);
+        return call_user_func_array([$controller, 'indexAction'], [$request]);
     }
 }

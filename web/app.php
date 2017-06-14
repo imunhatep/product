@@ -16,7 +16,6 @@ $twig = new Twig_Environment($loader, $twigConfig);
 
 $request = Request::createFromGlobals();
 $router = new Router(
-    $request,
     $twig,
     [
         '/'         => ProductController::class,
@@ -25,7 +24,7 @@ $router = new Router(
     ]
 );
 
-$response = $router->dispatch();
+$response = $router->dispatch($request);
 //$response = (new ProductController($twig))->indexAction($request);
 //$response = (new ContactsController($twig))->indexAction($request);
 
