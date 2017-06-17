@@ -1,6 +1,8 @@
 <?php
 namespace Product\Routing;
 
+use Product\Controller\BaseController;
+use Product\Controller\ContactsController;
 use Product\Request\Request;
 use Product\Response\Response;
 
@@ -12,30 +14,36 @@ class Router
     function __construct(\Twig_Environment $twig, array $routes = [])
     {
         $this->twig = $twig;
-        $this->routes = $routes;
+
+        foreach($this->routes as $path => $controller){
+            $this->addRoute($path, $controller);
+        }
     }
 
-    function addRoute(string $path, string $context)
+    function addRoute(string $path, BaseController $controller)
     {
-        $this->routes[$path] = $context;
+        $this->routes[$path] = $controller;
 
         return $this;
     }
 
     function dispatch(Request $request): Response
     {
+        /** @var ContactsController $controller */
+        $controller = $this->getController($request->getServer('PATH_INFO'));
 
-        $scriptName = $request->getServer('PATH_INFO');
+        return call_user_func_array([$controller, 'indexAction'], [$request]);
+    }
 
-        $parts = explode('/', trim($scriptName, '/'));
+    private function getController(string $path): BaseController
+    {
+        $parts = explode('/', trim($path, '/'));
         $context = '/' . (reset($parts) ?? '');
 
-        if(!array_key_exists($context, $this->routes)){
+        if (!array_key_exists($context, $this->routes)) {
             throw new \Exception('Route not found');
         }
 
-        $controller = new $this->routes[$context]($this->twig);
-
-        return call_user_func_array([$controller, 'indexAction'], [$request]);
+        return new $this->routes[$context]($this->twig);
     }
 }

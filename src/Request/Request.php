@@ -48,7 +48,7 @@ class Request implements RequestInterface
 
     function getServer(string $key)
     {
-        return $this->server[$key] ?: null;
+        return $this->server[$key] ?? null;
     }
 
     function getSession(): Session
