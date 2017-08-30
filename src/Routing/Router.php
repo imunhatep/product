@@ -15,12 +15,12 @@ class Router
     {
         $this->twig = $twig;
 
-        foreach($this->routes as $path => $controller){
+        foreach($routes as $path => $controller){
             $this->addRoute($path, $controller);
         }
     }
 
-    function addRoute(string $path, BaseController $controller)
+    function addRoute(string $path, string $controller)
     {
         $this->routes[$path] = $controller;
 
@@ -30,7 +30,7 @@ class Router
     function dispatch(Request $request): Response
     {
         /** @var ContactsController $controller */
-        $controller = $this->getController($request->getServer('PATH_INFO'));
+        $controller = $this->getController($request->getServer('PATH_INFO', $request->getServer('REQUEST_URI')));
 
         return call_user_func_array([$controller, 'indexAction'], [$request]);
     }
