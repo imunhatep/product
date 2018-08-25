@@ -17,7 +17,7 @@ class Response
     function __toString()
     {
         header(sprintf("HTTP/1.1 %d Ok", $this->status));
-        header('Content-Type: ', $this->contentType);
+        header('Content-Type: '. $this->contentType);
 
         return $this->content;
     }
